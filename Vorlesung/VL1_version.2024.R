@@ -97,16 +97,32 @@ hwr[hwr > 6]  # Gibt nur die Elemente zurück, die größer als 6 sind: 8 und 10
 str(hwr)  # Zeigt die Struktur des Vektors hwr an
 str(TRUE)  # Zeigt die Struktur des logischen Werts TRUE
 
+
+# kurzer Exkurs zum zeichnen und der Hilfe
+# umgang mit der hilfe und Beispiele
+
+require(stats) # for lowess, rpois, rnorm
+require(graphics) # for plot methods
+plot(cars)  # cars ist ein Datensatz aus R und wird mit den Paketen zuvor geladen
+lines(lowess(cars))
+
+# was macht die funktion lowess
+? lowess() # zeichnet eine line vom Ursprung zur rechten Seite
+
+? plot
+plot(sin, -pi, 2*pi) # see ?plot.function
+
 # Laden und Bearbeiten von Dateien
 # Installieren des Pakets 'readr', um Daten einzulesen
 # install.packages("readr", dependencies = TRUE)  # Nur einmal ausführen
 
+install.packages("readr", dependencies = TRUE) 
+library(readr)
 
-Gebrauchtwagen <- read_delim("Downloads/Gebrauchtwagen.csv", 
+Gebrauchtwagen <- read_delim("Data/Input/Gebrauchtwagen.csv", 
                              delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ","), 
                              trim_ws = TRUE)
 View(Gebrauchtwagen)
-
 
 
 # Beispiel für die Erstellung eines einfachen DataFrames
