@@ -68,7 +68,8 @@ help(sum)  # Alternative Methode, um die Hilfe anzuzeigen
 
 # Objektorientierung in R
 # Erstellen eines Vektors (Sammlung von Werten desselben Typs)
-hwr <- c(1, 4, 8, 10)  # Ein numerischer Vektor
+a <- 1,3,6,8,10  # Fehler: Komma wird als Dezimaltrennzeichen interpretiert
+hwr <- c(1, 4, 8, 10)  # Ein numerischer Vektor, c heißt concatenate
 hwr  # Ausgabe: 1 4 8 10
 
 # Erstellen eines gemischten Vektors
@@ -101,28 +102,19 @@ str(TRUE)  # Zeigt die Struktur des logischen Werts TRUE
 # kurzer Exkurs zum zeichnen und der Hilfe
 # umgang mit der hilfe und Beispiele
 
-require(stats) # for lowess, rpois, rnorm
-require(graphics) # for plot methods
+require(stats) # require prüft das vorhandensein eines paketes und lädt es hier stats
+require(graphics) # require prüft das vorhandensein eines paketes und lädt es hier graphics
+# wenn ein Fehler ausgegeben wird, dann ist das Paket nicht installiert
+# install.packages("graphics", dependencies = TRUE) # installiert das Paket graphics
 plot(cars)  # cars ist ein Datensatz aus R und wird mit den Paketen zuvor geladen
-lines(lowess(cars))
-
+# plot ist eine Funktion, die ein Streudiagramm erstellt
+lines(lowess(cars)) # lines ist eine Funktion, die eine Linie in ein Diagramm zeichnet und 
+# lowess ist eine Funktion, die eine geglättete Linie berechnet
 # was macht die funktion lowess
 ? lowess() # zeichnet eine line vom Ursprung zur rechten Seite
-
 ? plot
-plot(sin, -pi, 2*pi) # see ?plot.function
-
-# Laden und Bearbeiten von Dateien
-# Installieren des Pakets 'readr', um Daten einzulesen
-# install.packages("readr", dependencies = TRUE)  # Nur einmal ausführen
-
-install.packages("readr", dependencies = TRUE) 
-library(readr)
-
-Gebrauchtwagen <- read_delim("Data/Input/Gebrauchtwagen.csv", 
-                             delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ","), 
-                             trim_ws = TRUE)
-View(Gebrauchtwagen)
+plot(cos, -pi, 2*pi) # see ?plot.function
+lines(seq(-pi, 2*pi, by = 0.1), sin(seq(-pi, 2*pi, by = 0.1)), col = "blue") 
 
 
 # Beispiel für die Erstellung eines einfachen DataFrames
@@ -131,7 +123,8 @@ df <- data.frame(
   Alter = c(23, 35, 28)
 )
 df  # Ausgabe des DataFrames
-
+df[1, ]  # Ausgabe der ersten Zeile des DataFrames
+df[, 2]  # Ausgabe der zweiten Spalte des DataFrames
 # Zugriff auf Spalten eines DataFrames
 df$Alter  # Gibt die Alterswerte zurück: 23, 35, 28
 mean(df$Alter)  # Durchschnittsalter berechnen: 28.67
@@ -141,4 +134,7 @@ summary(df)  # Statistische Zusammenfassung des DataFrames
 
 # Visualisierung von Daten
 # Erstellen eines einfachen Streudiagramms
-plot(df$Alter, df$Name, main = "Alter der Personen", xlab = "Alter", ylab = "Name")
+barplot( height = df$Alter, # Höhe der Balken
+         names.arg = df$Name, # Namen der Personen
+         main = "Alter der Personen", # Titel des Diagramms
+         xlab = "Alter", ylab = "Name") # Beschriftung der Achsen
