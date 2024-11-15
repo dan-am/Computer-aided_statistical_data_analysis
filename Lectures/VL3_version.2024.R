@@ -12,10 +12,10 @@
 # trim_ws = TRUE entfernt überflüssige Leerzeichen
 
 install.packages("readr", dependencies = TRUE) # bitte prüft, ob das Paket bereits installiert ist
-library(readr)
+library(readr) # laden des Pakets
 
 # diese 3 Zeilen importieren die Daten
-"/Data/Input/Gebrauchtwagen.csv" # hier muss euer dateipfad stehen
+# "/Data/Input/Gebrauchtwagen.csv" # hier muss euer dateipfad stehen
 
 file_path <- "Data/Input/Gebrauchtwagen.csv"
 
@@ -23,7 +23,7 @@ Gebrauchtwagen <- read_delim(file_path,
                              delim = ";", escape_double = FALSE, 
                              locale = locale(decimal_mark = ","), 
                              trim_ws = TRUE)
-View(Gebrauchtwagen)
+View(Gebrauchtwagen) # zeigt die Daten in einem Tabellenformat an
 
 # 1. Verteilung der Daten verstehen
 # Zusammenfassung der numerischen Variablen (Alter, Fahrleistung, Hubraum, Wert)
@@ -67,7 +67,10 @@ range(Gebrauchtwagen$Fahr)  # Spannweite der Fahrleistung
 
 # 5. Quartile und Interquartilsabstand (IQR)
 quantile(Gebrauchtwagen$Alter)  # Quartile des Alters
+quantile(Gebrauchtwagen$Alter, probs = 0.2) # 20% Quantil des Alters
 IQR(Gebrauchtwagen$Alter)       # Interquartilsabstand des Alters
+IQR_geb = quantile(Gebrauchtwagen$Alter, probs = 0.75) - quantile(Gebrauchtwagen$Alter, probs = 0.25) # Interquartilsabstand des Alters
+IQR_geb
 
 quantile(Gebrauchtwagen$Fahr)  # Quartile der Fahrleistung
 IQR(Gebrauchtwagen$Fahr)       # Interquartilsabstand der Fahrleistung
