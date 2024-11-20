@@ -1,5 +1,6 @@
 # Notwendige Bibliotheken laden
 library(readr)
+install.packages("ggplot2")
 library(ggplot2)
 library(dplyr)
 install.packages("corrplot")
@@ -25,7 +26,7 @@ summary(Mietwohnungen2016)
 
 # 3. Fehlende Werte überprüfen
 # Anzahl der fehlenden Werte in jeder Spalte
-colSums(is.na(Mietwohnungen2016))
+colSums(is.na(Mietwohnungen2016)) # hier fehlen keine Werte
 
 # 4. Verteilung der numerischen Variablen visualisieren
 # Histogramm für Mietpreise
@@ -35,11 +36,33 @@ ggplot(Mietwohnungen2016, aes(x = Miete)) +
   xlab("Mietpreise (Euro)") +
   ylab("Häufigkeit")
 
-# Boxplot für Mietpreise
+hist(Mietwohnungen2016$Miete, freq = TRUE , breaks = 50, col = "blue",  # es wird die absolute Häufigkeit berechnet
+     border = "black", 
+     main = "Histogramm der Mietpreise", 
+     xlab = "Mietpreise (Euro)", 
+     ylab = "Relative Häufigkeit", 
+     ylim = c(0, 400))
+
+# Boxplot für Mietpreise 
 ggplot(Mietwohnungen2016, aes(y = Miete)) +
   geom_boxplot(fill = "orange", color = "black") +
   ggtitle("Boxplot der Mietpreise") +
   ylab("Mietpreise (Euro)")
+
+boxplot(Mietwohnungen2016$Miete, horizontal = FALSE, col = "orange", border = "black", 
+        main = "Boxplot der Mietpreise", 
+        xlab = "Mietpreise (Euro)")
+
+# Boxplot für Mietpreise nach Stadtteilen
+ggplot(Mietwohnungen2016, aes(y = Miete, x = Stadtteil)) +
+  geom_boxplot(fill = "orange", color = "black") +
+  ggtitle("Boxplot der Mietpreise") +
+  ylab("Mietpreise (Euro)")
+
+boxplot(Miete ~ Stadtteil, data = Mietwohnungen2016, horizontal = FALSE, col = "orange", border = "black", 
+        main = "Boxplot der Mietpreise nach Stadtteilen", 
+        xlab = "Stadtteile", 
+        ylab = "Mietpreise (Euro)")
 
 # 5. Empirische kumulative Verteilungsfunktion (ECDF)
 ggplot(Mietwohnungen2016, aes(x = Miete)) +
@@ -47,6 +70,8 @@ ggplot(Mietwohnungen2016, aes(x = Miete)) +
   ggtitle("Empirische kumulative Verteilungsfunktion der Mietpreise") +
   xlab("Mietpreise (Euro)") +
   ylab("Kumulative Wahrscheinlichkeit")
+
+plot(ecdf(Mietwohnungen2016$Miete))
 
 # 6. Zusammenhang zwischen Zimmeranzahl und Mietpreise
 # Scatterplot
@@ -56,6 +81,10 @@ ggplot(Mietwohnungen2016, aes(x = Zimmer, y = Miete)) +
   xlab("Zimmeranzahl") +
   ylab("Mietpreise (Euro)")
 
+plot(Mietwohnungen2016$Zimmer, Mietwohnungen2016$Miete)
+
+
+# Korrelation zwischen Zimmeranzahl und Mietpreisen
 # 7. Chi-Quadrat-Test
 # Häufigkeitstabelle für Stadtteil und Zimmeranzahl
 table_stadtteil_zimmer <- table(Mietwohnungen2016$Stadtteil, Mietwohnungen2016$Zimmer)
@@ -66,6 +95,7 @@ chi_sq <- chisq.test(table_stadtteil_zimmer)
 # Ergebnisse des Chi-Quadrat-Tests anzeigen
 chi_sq
 
+# 2. teil der Vorlesung vom 16.11.2024
 # 8. Varianzanalyse (ANOVA)
 # Zimmeranzahl (numerisch) über verschiedene Stadtteile (kategorisch) analysieren
 Mietwohnungen2016$Stadtteil <- as.factor(Mietwohnungen2016$Stadtteil)
@@ -81,6 +111,12 @@ linear_model <- lm(Miete ~ Zimmer, data = Mietwohnungen2016)
 # Zusammenfassung des Modells
 summary(linear_model)
 
+linear_model <- lm(Miete ~ -1 + Zimmer, data = Mietwohnungen2016)
+
+# Zusammenfassung des Modells
+summary(linear_model)
+# vergleich
+cor(Mietwohnungen2016$Miete, Mietwohnungen2016$Zimmer) # Korrelation zwischen Miete und Zimmeranzahl (r = 0.75))
 # Visualisierung der Regressionsgerade
 ggplot(Mietwohnungen2016, aes(x = Zimmer, y = Miete)) +
   geom_point(color = "blue") +
@@ -97,7 +133,7 @@ multiple_model <- lm(Miete ~ Zimmer + Fläche, data = Mietwohnungen2016)
 summary(multiple_model)
 
 # Diagnostikplots für das multiple Regressionsmodell
-par(mfrow = c(2, 2))  # Plots in einer 2x2-Anordnung
+par(mfrow = c(1, 1))  # Plots in einer 2x2-Anordnung
 plot(multiple_model)
 
 # 11. Korrelationen analysieren

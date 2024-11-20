@@ -98,16 +98,19 @@ lines(ecdf(rnorm(10000, mean = mean(Mietwohnungen2016$Fläche), sd = sd(Mietwohn
 
 # wie sieht die Standard-Normalverteilung aus
 set.seed(1234) # wir setzen einen fixpunkt, so dass unsere Zufallszahlen immer gleich sind
-hist(rnorm(100000), freq = FALSE)
-lines(density(rnorm(10000)), col= 2 , lwd = 2)
+hist(rnorm(10000), freq = FALSE)
+lines(density(rnorm(1000)), col= 2 , lwd = 2) # dichte der Normalverteilung aus den zufälligen Zahlen 
+# mit density bekomnme ich eine durchgezogene Linie
 lines(seq(-5,5, by = 0.01),dnorm(seq(-5,5, by = 0.01)), col= 4 , lwd = 2)
-
+# dnorm gibt mir die Dichte der Normalverteilung an das ist dei theoretische Dichte
+# hier seht ihr das mit steigendem n die Dichte immer näher zur theoretischen Dichte der Normalverteilung konvergiert
 
 
 # Chi-Quadrat
-
+# Häufigkeitstabelle für Stadtteil und Miete
 chisq.test(x = Mietwohnungen2016$Stadtteil, y = Mietwohnungen2016$Miete)
 set.seed(123)
 chisq.test(y = Mietwohnungen2016$Stadtteil, x = Mietwohnungen2016$Miete, simulate.p.value = TRUE, B = 100)
-# der p-value ist der Probability Wert und sagt wie unwarscheinlich die Korrelation ist
 length(unique(Mietwohnungen2016$Stadtteil)) # wieviele Stadtteile sind im Beispieldatensatz
+# der p-value ist sehr groß, das bedeutet, dass die beiden Variablen unabhängig sind  
+# der p-value ist die Wahrscheinlichkeit, dass die beiden Variablen unabhängig sind
