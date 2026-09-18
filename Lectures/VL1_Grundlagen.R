@@ -2,6 +2,7 @@
 
 5 + 1  # Addition: Ergebnis 6
 6 - 2.6  # Subtraktion: Ergebnis 3.4
+# Achtung: R schreibt Dezimalzahlen mit Punkt (2.6), nicht mit Komma.
 4 * 0.01  # Multiplikation: Ergebnis 0.04
 9 / 8  # Division: Ergebnis 1.125
 (3 / 4) * (5 / 8)  # Kombinierte Operation: Ergebnis 0.46875
@@ -18,7 +19,7 @@
 a <- 1 + 5  # 'a' wird der Wert 6 zugewiesen
 a  # Ausgabe: 6
 
-# Alternativer Zuweisungsoperator (rechts nach links)
+# Alternativer Zuweisungsoperator (links nach rechts)
 1 -> a  # 'a' wird der Wert 1 zugewiesen
 a  # Ausgabe: 1
 
@@ -43,7 +44,8 @@ a  # Ausgabe: 1
 
 # Überprüfen, ob ein Wert NA (Not Available) ist
 is.na(100)  # Ergebnis: FALSE, weil 100 nicht NA ist
-is.na(NA)  # Ergebnis: TRUE, weil NA gleich NA ist
+is.na(NA)  # Ergebnis: TRUE, weil is.na() einen fehlenden Wert erkennt
+NA == NA   # Ergebnis: NA. Ein Vergleich mit einem fehlenden Wert ist selbst unbekannt.
 
 # Eigene Funktionen definieren
 daniel <- function() {
@@ -68,13 +70,18 @@ help(sum)  # Alternative Methode, um die Hilfe anzuzeigen
 
 # Objektorientierung in R
 # Erstellen eines Vektors (Sammlung von Werten desselben Typs)
-a <- 1,3,6,8,10  # Fehler: Komma wird als Dezimaltrennzeichen interpretiert
+# a <- 1,3,6,8,10  # Fehler! Absichtlich auskommentiert, sonst bricht das Skript hier ab.
+# Das Komma trennt in R die Argumente einer Funktion; Dezimalzahlen schreibt R mit Punkt.
+# Mehrere Werte verbindet man mit c() zu einem Vektor:
+a <- c(1, 3, 6, 8, 10)
+a
 hwr <- c(1, 4, 8, 10)  # Ein numerischer Vektor, c heißt concatenate
 hwr  # Ausgabe: 1 4 8 10
 
 # Erstellen eines gemischten Vektors
-hwr_neu <- c(1, 4, 8, 10.4, "eins")  # Dieser Vektor enthält eine Zahl als Zeichenfolge
+hwr_neu <- c(1, 4, 8, 10.4, "eins")  # Wegen des Textes "eins" werden alle Elemente zu Text
 hwr_neu  # Ausgabe: "1" "4" "8" "10.4" "eins"
+class(hwr_neu)  # "character": ein Vektor enthält immer nur einen Datentyp
 
 # Ersetzen von "eins" durch das Objekt 'eins', das den numerischen Wert 1 enthält
 eins <- 1  # Zuweisung des Werts 1 an das Objekt 'eins'
@@ -106,12 +113,15 @@ require(stats) # require prüft das vorhandensein eines paketes und lädt es hie
 require(graphics) # require prüft das vorhandensein eines paketes und lädt es hier graphics
 # wenn ein Fehler ausgegeben wird, dann ist das Paket nicht installiert
 # install.packages("graphics", dependencies = TRUE) # installiert das Paket graphics
-plot(cars)  # cars ist ein Datensatz aus R und wird mit den Paketen zuvor geladen
+# Hinweis: stats und graphics gehören zu R selbst und sind immer geladen. Die Zeilen oben
+# zeigen nur, wie require() und install.packages() funktionieren. Für stats und graphics
+# ist die Installation nie nötig, für Zusatzpakete wie readr funktioniert sie genauso.
+plot(cars)  # cars ist ein Beispieldatensatz aus dem Paket datasets, das R immer mitlädt
 # plot ist eine Funktion, die ein Streudiagramm erstellt
 lines(lowess(cars)) # lines ist eine Funktion, die eine Linie in ein Diagramm zeichnet und 
 # lowess ist eine Funktion, die eine geglättete Linie berechnet
 # was macht die funktion lowess
-? lowess() # zeichnet eine line vom Ursprung zur rechten Seite
+? lowess # lowess glättet die Punktwolke lokal: eine geglättete Kurve, keine Gerade durch den Ursprung
 ? plot
 plot(cos, -pi, 2*pi) # see ?plot.function
 lines(seq(-pi, 2*pi, by = 0.1), sin(seq(-pi, 2*pi, by = 0.1)), col = "blue") 
@@ -133,8 +143,8 @@ mean(df$Alter)  # Durchschnittsalter berechnen: 28.67
 summary(df)  # Statistische Zusammenfassung des DataFrames
 
 # Visualisierung von Daten
-# Erstellen eines einfachen Streudiagramms
+# Erstellen eines einfachen Balkendiagramms
 barplot( height = df$Alter, # Höhe der Balken
          names.arg = df$Name, # Namen der Personen
          main = "Alter der Personen", # Titel des Diagramms
-         xlab = "Alter", ylab = "Name") # Beschriftung der Achsen
+         xlab = "Name", ylab = "Alter (Jahre)") # Beschriftung der Achsen

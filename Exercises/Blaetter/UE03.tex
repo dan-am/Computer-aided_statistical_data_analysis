@@ -1,0 +1,38 @@
+\input{praeambel}
+\begin{document}
+\blatt{3}{Deskriptive Statistik}{3}
+
+\textbf{Vorlage:} \texttt{Exercises/UE03\_Aufgaben.R}\\
+\textbf{Daten:} \texttt{Data/Input/Gebrauchtwagen.csv}, Variable \texttt{Fahr} (Fahrleistung in Tausend Kilometern)\\
+Die Vorlesung hat das Alter untersucht, hier übertragen Sie dieselben Schritte auf die Fahrleistung.
+
+\textbf{Faustregel für die Stärke eines Zusammenhangs} (Betrag des Koeffizienten, angelehnt an Fahrmeir et al.): unter 0,5 schwach, 0,5 bis unter 0,8 mittel, ab 0,8 stark.
+
+\aufgabe{Lage}
+Berechnen Sie Mittelwert und Median der Fahrleistung.
+\kontrolle{83,19; 81}
+
+\aufgabe{Streuung}
+Berechnen Sie Standardabweichung, Varianz und Spannweite.
+\kontrolle{47,35; 2.241,72; 270,5}
+
+\aufgabe{Quantile}
+Berechnen Sie die Quartile, den Interquartilsabstand und das 90-\%-Quantil.
+\kontrolle{46,8; 81; 114,85; 68,05; 149,8}
+\deutung{Bei jedem zehnten Fahrzeug liegt die Fahrleistung über 149.800 km.}
+
+\aufgabe{Grafiken}
+Zeichnen Sie ein Histogramm mit senkrechten Linien für Median und Mittelwert und einer Legende. Zeichnen Sie einen Boxplot der Fahrleistung je Typ. Welcher Typ hat den höchsten, welcher den niedrigsten Median?
+\kontrolle{VW Passat (112,5); Opel Vectra (57)}
+
+\aufgabe{Zusammenhang mit dem Wert}
+Zeichnen Sie ein Streudiagramm von Fahrleistung und Wert. Berechnen Sie die Korrelation nach Pearson und nach Spearman und stufen Sie sie nach der Faustregel ein.
+\kontrolle{$-0{,}56$; $-0{,}61$}
+\deutung{Beide Werte liegen zwischen 0,5 und 0,8: eine mittlere, gegenläufige Korrelation.}
+
+\aufgabe{Deutung}
+Beschreiben Sie in zwei Sätzen die Form der Verteilung und den Zusammenhang mit dem Wert.
+\deutung{Der Mittelwert (83,19) liegt etwas über dem Median (81): Die Verteilung ist leicht rechtsschief, einige Fahrzeuge haben sehr viele Kilometer. Je höher die Fahrleistung, desto geringer ist im Mittel der Wert.}
+
+\loesungscode{../UE03_Loesung.R}
+\end{document}

@@ -11,7 +11,8 @@
 # locale(decimal_mark = ",") definiert das Dezimaltrennzeichen als Komma
 # trim_ws = TRUE entfernt überflüssige Leerzeichen
 
-install.packages("readr", dependencies = TRUE) # bitte prüft, ob das Paket bereits installiert ist
+# Einmalig installieren, falls noch nicht vorhanden: dazu das # vor install.packages entfernen
+# install.packages("readr", dependencies = TRUE) # bitte prüft, ob das Paket bereits installiert ist
 library(readr) # laden des Pakets
 
 # diese 3 Zeilen importieren die Daten
@@ -35,7 +36,7 @@ mean(Gebrauchtwagen$Alter[Gebrauchtwagen$Typ == "5er BMW"])  # Durchschnittsalte
 
 mean(Gebrauchtwagen$Alter)  # Durchschnittsalter der Fahrzeuge
 mean(Gebrauchtwagen$Fahr)   # Durchschnittliche Fahrleistung in Tausend Kilometern
-mean(Gebrauchtwagen$Hub)    # Durchschnittlicher Hubraum in Liter
+mean(Gebrauchtwagen$Hub)    # Durchschnittlicher Hubraum in 100 cm³: 18,6 entspricht 1,86 Litern
 mean(Gebrauchtwagen$Wert)   # Durchschnittlicher Wert der Fahrzeuge in Euro
 
 # Berechnen des Medians
@@ -65,6 +66,11 @@ min(Gebrauchtwagen$Fahr)  # Mindestfahrleistung
 max(Gebrauchtwagen$Fahr)  # Höchstfahrleistung
 range(Gebrauchtwagen$Fahr)  # Spannweite der Fahrleistung
 
+# Plausibilität: Der kleinste Hubraum ist 2, also 0,2 Liter, bei einem Audi A6.
+# Das ist unplausibel, vermutlich ein Erfassungsfehler. Solche Werte prüfen wir vor der Analyse.
+min(Gebrauchtwagen$Hub)
+Gebrauchtwagen[Gebrauchtwagen$Hub == 2, ]
+
 # 5. Quartile und Interquartilsabstand (IQR)
 quantile(Gebrauchtwagen$Alter)  # Quartile des Alters
 quantile(Gebrauchtwagen$Alter, probs = 0.2) # 20% Quantil des Alters
@@ -80,23 +86,33 @@ IQR(Gebrauchtwagen$Fahr)       # Interquartilsabstand der Fahrleistung
 sort(table(Gebrauchtwagen$Typ)) # Zählt die Häufigkeit der verschiedenen Fahrzeugtypen und sortiert sie
 # Häufigkeitstabelle: Fahrzeugtypen und Alter
 table(Gebrauchtwagen$Typ, trunc(Gebrauchtwagen$Alter/12) )  # Erzeugt eine Kreuztabelle der Fahrzeugtypen und des Alters
-# erzeuge einen Scatterplot vom Alter und der Fahrleistung
-plot(Gebrauchtwagen$Alter, Gebrauchtwagen$Fahr, 
-     main = "Scatterplot: Alter vs. Fahrleistung", xlab = "Alter (Monate)", ylab = "Fahrleistung (Tsd. km)", col = "blue", pch = 19)
 
 # 7. Korrelationsanalyse
 # Untersuchen der Korrelation zwischen verschiedenen Variablen
 plot(Gebrauchtwagen$Alter, Gebrauchtwagen$Fahr, 
      main = "Scatterplot: Alter vs. Fahrleistung", xlab = "Alter (Monate)", ylab = "Fahrleistung (Tsd. km)", col = "blue", pch = 19)
-cor(Gebrauchtwagen$Alter, Gebrauchtwagen$Fahr)  # Korrelation zwischen Alter und Fahrleistung
-plot(Gebrauchtwagen$Alter, sqrt(Gebrauchtwagen$Wert), 
+cor(Gebrauchtwagen$Alter, Gebrauchtwagen$Fahr)  # Korrelation zwischen Alter und Fahrleistung: 0,77
+
+# Faustregel für die Stärke eines Zusammenhangs (Betrag des Koeffizienten),
+# angelehnt an Fahrmeir et al., Statistik - Der Weg zur Datenanalyse:
+#   unter 0,5          schwache Korrelation
+#   0,5 bis unter 0,8  mittlere Korrelation
+#   0,8 bis 1          starke Korrelation
+# Alter und Fahrleistung: 0,77, also eine mittlere Korrelation, knapp unter stark.
+# Das Vorzeichen zeigt die Richtung: positiv = gleichläufig, negativ = gegenläufig.
+
+plot(Gebrauchtwagen$Alter, Gebrauchtwagen$Wert, 
      main = "Scatterplot: Alter vs. Wert", xlab = "Alter (Monate)", ylab = "Wert in EUR", col = "red", pch = 19)
 cor(Gebrauchtwagen$Alter, Gebrauchtwagen$Wert, method = "spearman") # Korrelation zwischen Alter und Wert unter Verwendung des Spearman-Rangkorrelationskoeffizienten
 cor(Gebrauchtwagen$Alter, Gebrauchtwagen$Wert, method = "pearson" ) # Korrelation zwischen Alter und Wert unter Verwendung des Pearson-Korrelationskoeffizienten
+# Spearman -0,83 (stark), Pearson -0,71 (mittel): Der Wert sinkt mit dem Alter sehr
+# regelmäßig (monoton), aber nicht auf einer Geraden. Pearson misst nur den linearen Anteil.
 # Transformation der Wertvariable durch die Quadratwurzel
 plot(Gebrauchtwagen$Alter, sqrt(Gebrauchtwagen$Wert), 
-    main = "Scatterplot: Alter vs. sqrt(Wert)", xlab = "Alter (Monate)", ylab = "Wert in EUR", col = "green", pch = 19)
+    main = "Scatterplot: Alter vs. sqrt(Wert)", xlab = "Alter (Monate)", ylab = "Wurzel aus Wert", col = "green", pch = 19)
 cor(Gebrauchtwagen$Alter, sqrt(Gebrauchtwagen$Wert), method = "pearson" ) # Korrelation zwischen Alter und Wert unter Verwendung des Pearson-Korrelationskoeffizienten
+# -0,80: Nach der Wurzeltransformation ist der Zusammenhang linearer, Pearson liegt
+# jetzt fast so hoch wie Spearman.
 
 # 8. Grafische Darstellung der Verteilungen
 # Erstellen von Histogrammen und Boxplots zur Visualisierung der Verteilungen
@@ -105,11 +121,13 @@ cor(Gebrauchtwagen$Alter, sqrt(Gebrauchtwagen$Wert), method = "pearson" ) # Korr
 hist(Gebrauchtwagen$Alter, main = "Verteilung des Alters der Fahrzeuge", xlab = "Alter (Monate)", col = "lightblue", border = "black")
 abline(v = median(Gebrauchtwagen$Alter), col = "red", lwd = 2)  # Vertikale Linie für den Median
 abline(v = mean(Gebrauchtwagen$Alter), col = "blue", lty = 2, lwd = 2)  # Vertikale Linie für den Mittelwert
+legend("topright", legend = c("Median", "Mittelwert"), col = c("red", "blue"), lty = c(1, 2), lwd = 2)
 
 # Histogramm für die Fahrleistung der Fahrzeuge
 hist(Gebrauchtwagen$Fahr, main = "Verteilung der Fahrleistung der Fahrzeuge", xlab = "Fahrleistung (Tsd. km)", col = "lightgreen", border = "black")
 abline(v = median(Gebrauchtwagen$Fahr), col = "red", lwd = 2)  # Vertikale Linie für den Median
 abline(v = mean(Gebrauchtwagen$Fahr), col = "blue", lty = 2, lwd = 2)  # Vertikale Linie für den Mittelwert
+legend("topright", legend = c("Median", "Mittelwert"), col = c("red", "blue"), lty = c(1, 2), lwd = 2)
 
 # Boxplot für den Fahrzeugwert
 boxplot(Gebrauchtwagen$Wert, main = "Boxplot des Fahrzeugwerts", ylab = "Wert (Euro)", col = "lightyellow")

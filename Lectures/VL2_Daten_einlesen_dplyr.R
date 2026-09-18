@@ -10,11 +10,13 @@
 # locale(decimal_mark = ",") definiert das Dezimaltrennzeichen als Komma
 # trim_ws = TRUE entfernt überflüssige Leerzeichen
 
-install.packages("readr", dependencies = TRUE) # bitte prüft, ob das Paket bereits installiert ist
+# Einmalig installieren, falls noch nicht vorhanden: dazu das # vor install.packages entfernen
+# install.packages("readr", dependencies = TRUE) # bitte prüft, ob das Paket bereits installiert ist
 library(readr)
 
-# diese 3 Zeilen importieren die Daten
-"/Data/Input/Gebrauchtwagen.csv" # hier muss euer dateipfad stehen
+# Die folgenden Zeilen importieren die Daten.
+# Der Pfad ist relativ zum Projektordner: "Data/Input/Gebrauchtwagen.csv", ohne Schrägstrich
+# am Anfang. Liegt die Datei woanders, passt ihr file_path an.
 
 file_path <- "Data/Input/Gebrauchtwagen.csv"
 
@@ -25,7 +27,7 @@ Gebrauchtwagen <- read_delim(file_path,
 View(Gebrauchtwagen)
 
 ? View # Hilfe Funktion nutzen
-class(Gebrauchtwagen) # ergebnis: Metadaten des Datensatzes
+class(Gebrauchtwagen) # Ergebnis: die Klasse des Objekts, hier ein Tibble (tbl_df), eine Sonderform des data.frame
 str(Gebrauchtwagen) # structur und Klasse des Datensatzes 
 
 # Aus dem Datensatz Daten auswählen:
@@ -53,7 +55,7 @@ tail(Gebrauchtwagen)  # zeigt die letzten 6 Zeilen)
 
 # Installieren des Pakets 'dplyr' für effiziente Datenmanipulation
 # Das Paket wird nur einmal installiert und dann geladen.
-install.packages("dplyr", dependencies = TRUE)
+# install.packages("dplyr", dependencies = TRUE) # einmalig: dazu das # am Zeilenanfang entfernen
 library(dplyr)  # Laden des 'dplyr' Pakets
 
 # Überblick über die Spaltennamen des Datensatzes
@@ -75,6 +77,13 @@ df1 <- Gebrauchtwagen %>%
 # Anzeige des gefilterten Datensatzes
 View(df1)  # Öffnet den gefilterten Datensatz in einem neuen Fenster
 
+# Stolperfalle: Der Typ heißt "5er BMW", nicht "BMW".
+# Dieser Filter findet 0 Zeilen, und R meldet keinen Fehler:
+Gebrauchtwagen %>%
+  filter(Typ == "BMW")
+# Deshalb vorher nachsehen, wie die Werte genau heißen:
+unique(Gebrauchtwagen$Typ)
+
 # Gruppierung und Berechnung von aggregierten Werten
 # Beispiel: Berechnen des durchschnittlichen Werts (Mittelwert) für jeden Fahrzeugtyp
 Gebrauchtwagen %>%
@@ -95,7 +104,6 @@ plot(table(Gebrauchtwagen$Typ), type = "h", col = "red", lwd = 10,
 axis(2, at = seq(0, 100, by = 10), las=2)
 
 # FAZIT:
-# In diesem Abschnitt haben wir gezeigt, wie man Daten mithilfe des 'dplyr'-Pakets
-# manipuliert und filtert, sowie wie man verschiedene Aggregationsfunktionen wie Mittelwert
-# auf Gruppierungen anwendet. Außerdem wurden unterschiedliche Möglichkeiten der
-# Visualisierung von Daten demonstriert, wie Barplots, Histogramme und Scatterplots.
+# In diesem Abschnitt haben wir Daten eingelesen, uns einen Überblick verschafft und sie mit
+# dem Paket dplyr gefiltert, gruppiert und zusammengefasst. Zum Schluss haben wir die
+# Häufigkeiten der Fahrzeugtypen als Balkendiagramm dargestellt.

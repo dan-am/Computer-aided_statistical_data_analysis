@@ -1,0 +1,46 @@
+% Gemeinsame Vorlage für alle Übungsblätter.
+% Aufgabenblatt:  pdflatex -jobname=UE01_Aufgaben UE01.tex
+% Lösungsblatt:   pdflatex -jobname=UE01_Loesung "\def\mitloesung{}\input{UE01.tex}"
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[autostyle]{csquotes}
+\usepackage{parskip}
+\usepackage{enumitem}
+
+\AtBeginDocument{\shorthandoff{"}}
+
+\newif\ifloesung
+\ifdefined\mitloesung \loesungtrue \fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Computergestützte Statistische Datenanalyse}
+\rhead{\small HWR Berlin \textperiodcentered{} WiSe 2026}
+\cfoot{\small\thepage}
+
+\newcommand{\blatt}[3]{%
+  {\LARGE\bfseries \ifloesung Lösung zu \fi Übungsblatt #1}\par\smallskip
+  {\large #2}\par
+  {\small zu Vorlesung #3}\par\medskip}
+
+\newcounter{aufgabe}
+\newcommand{\aufgabe}[1]{\stepcounter{aufgabe}\par\medskip\noindent\textbf{Aufgabe \theaufgabe: #1}\par\nopagebreak}
+\newcommand{\kontrolle}[1]{\par\noindent{\small\itshape Kontrollwert: #1}\par}
+\newcommand{\deutung}[1]{\ifloesung\par\noindent{\small\textbf{Musterdeutung:} #1}\par\fi}
+\newcommand{\hinweis}[1]{\par\noindent{\small\textbf{Tipp:} #1}\par}
+
+\lstset{language=R, basicstyle=\ttfamily\footnotesize, commentstyle=\color{gray}\itshape,
+  keywordstyle=\color{blue!60!black}, stringstyle=\color{green!40!black},
+  frame=single, rulecolor=\color{gray!40}, breaklines=true, columns=fullflexible,
+  keepspaces=true, showstringspaces=false,
+  literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1 {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+           {ß}{{\ss}}1 {²}{{\textsuperscript{2}}}1 {³}{{\textsuperscript{3}}}1}
+
+\newcommand{\loesungscode}[1]{\ifloesung\section*{R-Code der Lösung}\lstinputlisting{#1}\fi}
