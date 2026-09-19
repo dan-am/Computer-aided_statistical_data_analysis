@@ -1,20 +1,64 @@
-# Computer-aided_statistical_data_analysis
-This is a R Script for a german basic course in compter aided statistics with R, 
-the comments and the logic are in german language 
-We are dealing witha german university course of bachelor level
+# Computergestützte Statistische Datenanalyse mit R
 
-Summary of the R Script:
+*R scripts, exercises and data for a German bachelor course in computer-aided statistics (HWR Berlin). Comments and materials are in German.*
 
-This R script demonstrates essential concepts of descriptive statistics and data manipulation using the dplyr package. The following key steps are covered:
+Materialien zum Bachelorkurs „Computergestützte Statistische Datenanalyse“ (HWR Berlin, DL25, Wintersemester 2026). Das Repository ist die Quelle für alle Dateien im Moodle-Kurs: Was hier liegt, liegt dort mit demselben Namen.
 
-	1.	Data Import:
-	•	The dataset is imported with special handling for delimiters and decimal marks.
-	2.	Descriptive Statistics:
-	•	Measures of central tendency (mean and median) and measures of dispersion (standard deviation, variance, and range) are computed.
-	3.	Data Manipulation with dplyr:
-	•	Data is filtered based on conditions (e.g., car age greater than 50 months and value above 15,000).
-	•	Grouping and summarization operations are performed to compute the mean car value for different car types.
-	4.	Data Visualization:
-	•	Histograms, scatter plots, box plots, and bar plots are created to visualize the distribution of variables and relationships between them.
+**Vorwissen:** Statistik 1, also deskriptive Statistik, Wahrscheinlichkeitsrechnung und Regression ohne Tiefgang. Hypothesentests und p-Werte gehören nicht zum Kurs; Varianzanalyse und Chi-Quadrat werden über ihren deskriptiven Kern behandelt (Streuungszerlegung, korrigierter Kontingenzkoeffizient).
 
-This document provides a structured workflow for performing basic data analysis and visualization in R. 
+## Aufbau
+
+| Ordner | Inhalt |
+|---|---|
+| `Lectures/` | R-Skripte der Vorlesungen, `Archiv/` enthält die Flinkster-Fallstudie von 2024 |
+| `Exercises/` | Übungen mit Kontrollwerten: `UE0n_Aufgaben.R` (Vorlage) und `UE0n_Loesung.R` |
+| `Exercises/Blaetter/` | Übungsblätter als LaTeX-Quelle und PDF (Aufgaben und Lösung) |
+| `Data/Input/` | Datensätze der Vorlesungen und der Hausarbeit |
+| `Graphics/` | Skript und PNG-Dateien der vier R-Grafiken, die im Moodle-Kurs mit Deutungsfragen stehen |
+
+## Vorlesungen
+
+| Skript | Thema | Datensatz | Übung |
+|---|---|---|---|
+| `VL1_Grundlagen.R` | Rechnen, Objekte, Vektoren, Funktionen, erste Grafiken | – | UE01 |
+| `VL2_Daten_einlesen_dplyr.R` | Daten einlesen, filtern, gruppieren mit dplyr | Gebrauchtwagen | UE02 |
+| `VL3_Deskriptive_Statistik.R` | Lage, Streuung, Quantile, Korrelation, Faustregel zur Stärke | Gebrauchtwagen | UE03 |
+| `VL4_Zusammenhaenge.R` | Korrelation, Zufallsvergleich durch Mischen, Streuungszerlegung, Kreuztabelle | Mietwohnungen | folgt |
+| `VL5_Grafiken_Regression.R` | Grafiken mit ggplot2, einfache und multiple Regression | Mietwohnungen | folgt |
+| `VL6_Verteilungen.R` | Normalverteilung, Verteilungsfunktion, fehlende Werte | simuliert, Mietwohnungen | folgt |
+| `VL7_Fallstudie_Passagierzahlen.R` | vollständige Fallstudie wie in der Hausarbeit | Passagierzahlen | – |
+
+## Datensätze
+
+| Datei | Beobachtungen | Variablen |
+|---|---|---|
+| `Gebrauchtwagen.csv` | 863 Fahrzeuge | `Typ`, `Alter` (Monate), `Fahr` (Tausend km), `Hub` (100 cm³, also 25 = 2,5 Liter), `Wert` (Euro) |
+| `Mietwohnungen2016.csv` | 5.148 Wohnungen | `Stadtteil`, `Ortskode` (Code des Stadtteils), `WestOst` und `NordSüd` (Lage), `Lage` (Stufen 1 bis 3), `Zimmer`, `Fläche` (m²), `Miete` (Euro) |
+| `Passagierzahlen.csv` | 610.670 Halte der S-Bahn Hamburg, 10.12.2016 bis 01.04.2017 | `Zugnr`, `Station`, `Einsteiger`, `Aussteiger`, Ist-Ankunft und Ist-Abfahrt, Linie |
+
+Gebrauchtwagen und Mietwohnungen sind UTF-8-kodiert, die Passagierzahlen Latin-1. Alle Dateien nutzen das Semikolon als Trenner und das Komma als Dezimalzeichen; die Skripte zeigen, wie man sie einliest.
+
+## Einrichtung
+
+1. **Posit Cloud** (empfohlen, ohne Installation) oder **R und RStudio Desktop**.
+2. Das Projekt über `Computer-aided_statistical_data_analysis.Rproj` öffnen. Alle Pfade sind relativ zum Projektordner (`Data/Input/...`).
+3. Pakete einmalig installieren: `readr`, `dplyr`, `ggplot2`, `corrplot`. In den Skripten steht die Zeile `install.packages(...)` jeweils auskommentiert vor `library(...)`.
+
+## Arbeiten mit KI-Werkzeugen
+
+KI-Werkzeuge wie GitHub Copilot (für Studierende kostenlos) oder Posit Assistant sind erlaubt. Prüfen Sie jedes Ergebnis selbst: Läuft der Code in einer frischen Sitzung? Passt das Verfahren zum Skalenniveau? Stimmen die Zahlen mit den Kontrollwerten überein? KI-Werkzeuge schlagen oft Tests und p-Werte vor, die nicht zum Kurs gehören. Die Regeln für die Hausarbeit stehen im Moodle-Kurs.
+
+## Übungsblätter erzeugen
+
+Im Ordner `Exercises/Blaetter/`:
+
+```bash
+pdflatex -jobname=UE01_Aufgaben UE01.tex
+pdflatex -jobname=UE01_Loesung "\def\mitloesung{}\input{UE01.tex}"
+```
+
+Das Lösungsblatt druckt die Datei `UE01_Loesung.R` direkt ein; der Code hat damit nur eine Quelle.
+
+## Lizenz
+
+GPL-3.0, siehe `LICENSE`.
