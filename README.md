@@ -2,7 +2,7 @@
 
 *R scripts, exercises and data for a German bachelor course in computer-aided statistics (HWR Berlin). Comments and materials are in German.*
 
-Materialien zum Bachelorkurs „Computergestützte Statistische Datenanalyse“ (HWR Berlin, DL25, Wintersemester 2026). Das Repository ist die Quelle für alle Dateien im Moodle-Kurs: Was hier liegt, liegt dort mit demselben Namen.
+Materialien zum Bachelorkurs „Computergestützte Statistische Datenanalyse“ (HWR Berlin, DL25, Wintersemester 2026). Das Repository enthält den R-Code, die Datensätze und die Grafiken des Kurses; die Dateien liegen im Moodle-Kurs unter denselben Namen. Vorlesungsfolien, Übungsblätter und die Kurstexte werden außerhalb des Repositorys gepflegt, im Ordner `Moodle_Ueberarbeitung/` neben diesem Projektordner.
 
 **Vorwissen:** Statistik 1, also deskriptive Statistik, Wahrscheinlichkeitsrechnung und Regression ohne Tiefgang. Hypothesentests und p-Werte gehören nicht zum Kurs; Varianzanalyse und Chi-Quadrat werden über ihren deskriptiven Kern behandelt (Streuungszerlegung, korrigierter Kontingenzkoeffizient).
 
@@ -12,9 +12,10 @@ Materialien zum Bachelorkurs „Computergestützte Statistische Datenanalyse“ 
 |---|---|
 | `Lectures/` | R-Skripte der Vorlesungen, `Archiv/` enthält die Flinkster-Fallstudie von 2024 |
 | `Exercises/` | Übungen mit Kontrollwerten: `UE0n_Aufgaben.R` (Vorlage) und `UE0n_Loesung.R` |
-| `Exercises/Blaetter/` | Übungsblätter als LaTeX-Quelle und PDF (Aufgaben und Lösung) |
 | `Data/Input/` | Datensätze der Vorlesungen und der Hausarbeit |
 | `Graphics/` | Skript und PNG-Dateien der vier R-Grafiken, die im Moodle-Kurs mit Deutungsfragen stehen |
+
+Die Übungsblätter in `Moodle_Ueberarbeitung/Uebungsblaetter/` drucken den Code aus `Exercises/` direkt ein, die Folien in `Moodle_Ueberarbeitung/Folien/` zeigen die Beispiele aus `Lectures/`. Beide Ordner erwarten das Repository unter diesem Namen daneben.
 
 ## Vorlesungen
 
@@ -47,17 +48,6 @@ Gebrauchtwagen und Mietwohnungen sind UTF-8-kodiert, die Passagierzahlen Latin-1
 ## Arbeiten mit KI-Werkzeugen
 
 KI-Werkzeuge wie GitHub Copilot (für Studierende kostenlos) oder Posit Assistant sind erlaubt. Prüfen Sie jedes Ergebnis selbst: Läuft der Code in einer frischen Sitzung? Passt das Verfahren zum Skalenniveau? Stimmen die Zahlen mit den Kontrollwerten überein? KI-Werkzeuge schlagen oft Tests und p-Werte vor, die nicht zum Kurs gehören. Die Regeln für die Hausarbeit stehen im Moodle-Kurs.
-
-## Übungsblätter erzeugen
-
-Im Ordner `Exercises/Blaetter/`:
-
-```bash
-pdflatex -jobname=UE01_Aufgaben UE01.tex
-pdflatex -jobname=UE01_Loesung "\def\mitloesung{}\input{UE01.tex}"
-```
-
-Das Lösungsblatt druckt die Datei `UE01_Loesung.R` direkt ein; der Code hat damit nur eine Quelle.
 
 ## Lizenz
 
